@@ -16,5 +16,5 @@ npm install
 
 The project has BrowserSync installed so users can automatically reload
 the project when `app.js` or `feedreader.js` are changed. To run BrowserSync,
-open a browser and in the project's root directory run 'grunt browserSync'. 
+open a browser and in the project's root directory run `grunt browserSync`. 
 This should open the project in the browser.
