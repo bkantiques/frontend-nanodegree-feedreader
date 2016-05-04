@@ -10,7 +10,7 @@ and install the node modules.
 
 ```
 git clone https://github.com/bkantiques/frontend-nanodegree-feedreader.git
-cd frontent-nanodegree-feedreader
+cd frontend-nanodegree-feedreader
 npm install
 ```
 
