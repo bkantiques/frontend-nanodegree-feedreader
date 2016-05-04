@@ -90,6 +90,7 @@ function init() {
                   * entryTemplate (created above using Handlebars) and append
                   * the resulting HTML to the list of entries on the page.
                   */
+                  // Could add error handling here if title or contentSnippet are not acceptable
                  entries.forEach(function(entry) {
                      container.append(entryTemplate(entry));
                  });
