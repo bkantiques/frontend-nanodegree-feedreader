@@ -31,42 +31,109 @@ $(function() {
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
-
+         it('have URLs', function() {
+            allFeeds.forEach(function(feed) {
+                expect(feed.url).toBeDefined();
+                expect(feed.url).not.toBe('');         
+            });
+         });
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+         it('have names', function() {
+            allFeeds.forEach(function(feed) {
+                expect(feed.name).toBeDefined();
+                expect(feed.name).not.toBe('');         
+            });
+         });
     });
 
 
     /* TODO: Write a new test suite named "The menu" */
+    describe('The menu', function() {
 
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+         it('is hidden by default', function() {
+            // Expect that body has 'menu-hidden' clas initially
+            expect($('body').hasClass('menu-hidden')).toBe(true);   
+         });
 
          /* TODO: Write a test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+          it('changes visibility when the menu icon is clicked', function() {
+            var $menuIcon = $('.menu-icon-link');
+            var $body = $('body');
+
+            // Trigger menu icon click and expect body does not have 'menu-hidden' class 
+            $menuIcon.click();
+            expect($body.hasClass('menu-hidden')).toBe(false);
+
+            // Trigger another menu icon click and expect body has 'menu-hidden' class 
+            $menuIcon.click();
+            expect($body.hasClass('menu-hidden')).toBe(true);            
+          });
+
+    });
+
 
     /* TODO: Write a new test suite named "Initial Entries" */
-
+    describe('Initial Entries', function() {
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+         beforeEach(function(done) {
+            loadFeed(0, done);
+         });
 
-    /* TODO: Write a new test suite named "New Feed Selection"
+         it('after loading a feed, there is at least 1 .entry element within the .feed container', function() {
+            // Check that there are .entry's in .feed
+            var $feeds = $('.feed .entry');
+
+            expect($feeds.length).toBeGreaterThan(0);
+         });
+
+    });
+
+
+    /* TODO: Write a new test suite named "New Feed Selection" */
+    describe('New Feed Selection', function() {
+
+        var oldContent;
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+         beforeEach(function(done) {
+            // Load first feed
+            loadFeed(1, function() {
+                // Save content of .feed after first load
+                oldContent = $('.feed').html();
+                // Load second feed then call done
+                loadFeed(2, done);
+            });
+         });
+
+         it('when a new feed is loaded, the content of .feed changes', function() {
+            var newContent = $('.feed').html();
+            /* Expect content after second feed load is not the same as content 
+            after first feed load */
+            expect(newContent).not.toEqual(oldContent);
+         });
+
+    });
+
+
 }());

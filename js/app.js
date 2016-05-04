@@ -29,7 +29,13 @@ var allFeeds = [
  */
 function init() {
     // Load the first feed we've defined (index of 0).
-    loadFeed(0);
+    // Add error handling: alert the error
+    try {
+        loadFeed(0);
+    }
+    catch(e) {
+        alert('Error: ' + e);
+    }
 }
 
 /* This function performs everything necessary to load a
@@ -41,6 +47,19 @@ function init() {
  * which will be called after everything has run successfully.
  */
  function loadFeed(id, cb) {
+
+    // Check for array out of bounds
+    if(id < 0 || id > allFeeds.length) {
+        throw 'Out-of-bound array access';
+    }
+
+    // Check for undefined variables
+    if(typeof(allFeeds[id]) === 'undefined' ||
+        typeof(allFeeds[id].url) === 'undefined' ||
+        typeof(allFeeds[id].name) === 'undefined') {
+        throw 'Undefined variable or property in allFeeds';
+    }
+
      var feedUrl = allFeeds[id].url,
          feedName = allFeeds[id].name;
 
@@ -50,6 +69,12 @@ function init() {
        data: JSON.stringify({url: feedUrl}),
        contentType:"application/json",
        success: function (result, status){
+
+                // Check if entries will be defined and has length
+                if(!result.feed || !result.feed.entries || 
+                    typeof(result.feed.entries.length) === 'undefined') {
+                    throw 'Undefined variables in rss response'; 
+                }
 
                  var container = $('.feed'),
                      title = $('.header-title'),
@@ -121,7 +146,13 @@ $(function() {
         var item = $(this);
 
         $('body').addClass('menu-hidden');
-        loadFeed(item.data('id'));
+        // Add error handling: alert the error
+        try {
+            loadFeed(item.data('id'));
+        }
+        catch(e) {
+            alert('Error: ' + e);
+        }
         return false;
     });
 
